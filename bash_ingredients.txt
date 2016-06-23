@@ -6,3 +6,15 @@ for word in $(< psrnames.txt)
 
 #find the min and max in column 4 and print
 awk 'BEGIN {max=0}{if (max<$4){max=$4}; if(min>$4){min=$4}}END {print max, min}'
+
+#forloop over list to delete all lines in i files that have value <10 in column 12, but save first line
+for i in 2 4 6 8 10
+> do
+> awk '(NR == 1)||($12 >= 10)' file$i.txt > file_parsed$i.txt
+> done
+
+#forloop to add header to a bunch of files, temp file only allows rewrite if no error in concatenate
+for i in 2 4 6 8 10
+> do
+> echo 'FORMAT 1' | cat - file$i.txt > temp && mv temp file$i.txt
+> done
