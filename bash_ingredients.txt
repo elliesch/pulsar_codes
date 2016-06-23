@@ -1,0 +1,8 @@
+#forloop over a file of strings to list files in another directory that begin with A or B and save output in your current directory
+for word in $(< psrnames.txt)
+> do
+> (cd ../../nanograv/timing/releases/11y/puppi/$word/ && ls | grep "A\|B" ) > $word.file
+> done
+
+#find the min and max in column 4 and print
+awk 'BEGIN {max=0}{if (max<$4){max=$4}; if(min>$4){min=$4}}END {print max, min}'
