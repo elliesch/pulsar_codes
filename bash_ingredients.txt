@@ -18,3 +18,21 @@ for i in 2 4 6 8 10
 > do
 > echo 'FORMAT 1' | cat - file$i.txt > temp && mv temp file$i.txt
 > done
+
+#to find max-min variance of column 4 and print out the name of the file containing column 4
+for word in $(< psrnames.txt )
+> do
+> awk 'BEGIN {max=0}{if (max<$4){max=$4}; if(min>$4){min=$4}}END {print FILENAME, max-min}' $word.flx
+> done
+
+# to find the standard deviation and print near the filename
+for word in $(< psrnames.txt )
+> do 
+> awk '{sum+=$4; array[NR]=$4}END{for(x=1;x<=NR;x++){sumsq+=((array[x]-(sum/NR))**2);}{print FILENAME, sqrt(sumsq/NR)}}' $word.flx
+> done
+
+#to find the variance (std dev^2)
+(for word in $(< psrnames.txt ); do; awk '{sum+=$4; array[NR]=$4}END{for(x=1;x<=NR;x++){sumsq+=((array[x]-(sum/NR))**2);}{print FILENAME, ((sqrt(sumsq/NR))**2)}}' $word.flx; done) > 11y_fluxvar.txt
+
+#remove all lines that have a certain string, even when string is inside a longer string
+grep -v "_56465_" timing/B1937+21.L-wide.PUPPI.11y.x.tim > timing/B1937+21.L-wide.PUPPI.11y.-56465.tim
